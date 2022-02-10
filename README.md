@@ -1,7 +1,7 @@
 intuitRIL
 =========
 
-An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to some intermediate logics.
+An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to Intermediate Logics.
 
 
 
@@ -69,15 +69,15 @@ Examples of formulas are available in the directory `test` (files with suffix `.
 To decide the validity of the formula in the file `form.p` in the logic with name `LogName`, run the command:
 
 ```console
- intuitR -l LogName form.p
+ intuitR -lLogName form.p
 ```
-If the option `-lLogname` is omitted,  the default logic  is Intuitionistic Propositional Logic;
+If the option `-lLogName` is omitted,  the default logic  is Intuitionistic Propositional Logic;
 see in next section the list of the implemented logics.
 
 To generate the output files (trace, models), use the option `-t`:
 
 ```console
- intuitR -l LogName  -t form.p
+ intuitR -lLogName  -t form.p
 ```
 
 A directory out-...  will be created containing  the source files (.tex and .gv).
@@ -115,9 +115,18 @@ We have implemented other different  trace levels (options `-tk`, with k=0,1,2):
  intuitR -l LogName -t1 form.p     // medium  trace level, no output files 
  intuitR -l LogName -t2 form.p     // maximum trace level, no output files 
 ```
+Examples
+--------
 
+The directory `examples` contain two examples.
 
+The output have be obtained by running the following command lines from the directory `test`
+(if you run the prover from another directory, you have to specify the full path of the input files `.p`):
 
+```console
+intuitRIL -lgl -t jankovAxiom.p 
+intuitRIL -lgl -t kpAxiom.p
+```
 
 Implemented logics
 ------------------
@@ -127,7 +136,7 @@ Implemented logics
 | Logic name  | Description                |
 | ----------- | ---------------------------|
 | `gl`        | G&ouml;edel-Dummett Logic (linear models)  |
-| `glk`       | G&ouml;edel-Dummett Logic of depth k (linear models with depth at most n, where k&geq; 1)  |
+| `glk`       | G&ouml;edel-Dummett Logic of depth k (linear models with depth at most k, where k&geq; 1)  |
 | `jn`        | Jankov Logic (one maximal word)   |
 | `kp`        | Kreisel and Putnam Logic      (*)  |
 
@@ -141,7 +150,7 @@ Implemented logics
 where  maxW(w') is the set of maximal worlds w'' such that w' &leq; w''. Termination is not guaranteed.
 
 
-Examples
+Examples:
 
 ```console
  intuitRIL -lgl  form.p
