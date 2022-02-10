@@ -1,0 +1,60 @@
+cabal-version:      2.4
+name:               intuitRIL
+version:            0.1.0.0
+synopsis:           test
+
+-- A longer description of the package.
+-- description:
+homepage:
+
+-- A URL where users can report bugs.
+-- bug-reports:
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Camillo Fiorentini
+maintainer:         fiorentini@di.unimi.it
+
+-- A copyright notice.
+-- copyright:
+category:           Theorem Prover
+extra-source-files:
+    CHANGELOG.md
+    README.md
+
+executable intuitRIL
+    main-is:           IntuitRIL.hs
+
+    -- Modules included in this executable, other than Main.
+    other-modules: Clausify,
+                   Language,
+                   Model,
+                   ParserTPTP,
+                   Prover,
+                   ProverTypes,
+                   Utility,
+                   WriteLatex,
+                   WriteMakeFile,
+                   WriteModelGraphviz,
+                   ------    IMPLEMENTED LOGICS -----
+                   BoundedDepth,
+                   Dummett,
+                   DummettBoundedDepth,
+                   -- HereAndThere,
+                   Jankov,
+                   Kp
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+    build-depends:    base,
+                      -- base ^>=4.12.0.0,
+                      minisat,
+                      partial-order,
+                      containers,
+                      mtl,
+                      raw-strings-qq,
+                      filepath,
+                      directory,
+                      parsec
+                      
+    hs-source-dirs:   src
+    default-language: Haskell2010
