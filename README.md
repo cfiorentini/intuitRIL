@@ -134,8 +134,8 @@ Implemented logics
 
 | Logic name  | Description                |
 | ----------- | ---------------------------|
-| `gl`        | G&ouml;edel-Dummett Logic (linear models)  |
-| `glk`       | G&ouml;edel-Dummett Logic of depth k (linear models with depth at most k, where k&geq; 1)  |
+| `gl`        | G&ouml;del-Dummett Logic (linear models)  |
+| `glk`       | G&ouml;del-Dummett Logic of depth k (linear models with depth at most k, where k&geq; 1)  |
 | `jn`        | Jankov Logic (one maximal word)   |
 | `kp`        | Kreisel and Putnam Logic      (*)  |
 
