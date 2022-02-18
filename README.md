@@ -69,15 +69,15 @@ Examples of formulas are available in the directory `test` (files with suffix `.
 To decide the validity of the formula in the file `form.p` in the logic with name `LogName`, run the command:
 
 ```console
- intuitR -lLogName form.p
+ intuitRIL -lLogName form.p
 ```
 If the option `-lLogName` is omitted,  the default logic  is Intuitionistic Propositional Logic;
-see in next section the list of the implemented logics.
+see below the list of the implemented logics.
 
 To generate the output files (trace, models), use the option `-t`:
 
 ```console
- intuitR -lLogName  -t form.p
+ intuitRIL -lLogName  -t form.p
 ```
 
 A directory out-...  will be created containing  the source files (.tex and .gv).
@@ -111,10 +111,17 @@ Now the text in the pdf is very tiny and must be magnified.
 We have implemented other different  trace levels (options `-tk`, with k=0,1,2):
 
 ```console
- intuitR -l LogName -t0 form.p     // minimum trace level, no output files [DEFAULT]
- intuitR -l LogName -t1 form.p     // medium  trace level, no output files 
- intuitR -l LogName -t2 form.p     // maximum trace level, no output files 
+ intuitRIL -l LogName -t0 form.p     // minimum trace level, no output files [DEFAULT]
+ intuitRIL -l LogName -t1 form.p     // medium  trace level, no output files 
+ intuitRIL -l LogName -t2 form.p     // maximum trace level, no output files 
 ```
+
+If you only want to clausfy the input formula, use option `-c`:
+
+```console
+ intuitRIL -c form.p
+```
+
 Examples
 --------
 

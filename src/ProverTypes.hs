@@ -38,43 +38,7 @@ instance Show Logic where
 
 data SearchResult  = CountSat | Valid 
   deriving Eq
-{-
-data SimpleForm 
-  = Name :&&: Name
-  | Name :||: Name
-  | Name :==>: Name
-  | Name :<==>: Name
- deriving ( Eq, Ord, Show )
 
-
-simpleFormToForm :: SimpleForm -> Form Name
-simpleFormToForm (n1 :&&: n2)   = (Atom n1)  :&: (Atom n2)
-simpleFormToForm (n1 :||: n2)   = (Atom n1)  :|: (Atom n2)
-simpleFormToForm (n1 :==>: n2)  = (Atom n1)  :=>: (Atom n2)
-simpleFormToForm (n1 :<==>: n2) = (Atom n1)  :<=>: (Atom n2) 
-
--}
-
--- type Cache = Map.Map SimpleForm (Name, Bool, Bool)
-
-
--- cacheToMap :: Cache -> Map.Map Name (Form Name)
--- cacheToMap nameCache =
---     Map.fromList $ map ( \(sf, (name,_,_) ) -> ( name, simpleFormToForm sf) )  (Map.toList nameCache)
-
-{-
-cache_to_formNameList :: Cache -> [(Name, Form Name)]
-cache_to_formNameList cache =
-  map ( \(sf, (name,_,_) ) -> ( name, simpleFormToForm sf) )  (Map.toList cache)
-
--}
-
-
-{-
-printCache ::  Cache -> String
-printCache cache =
-  concatMap (\(name,form) ->   name ++ "  |--->  " ++ show form ++ "\n" )  ( cache_to_formNameList cache )
--}
 
 -- constant fields 
 data ProverEnv =
@@ -141,7 +105,6 @@ mkProverState sat univ ltToNm_map nmToLt_map cache index   =
             countSat = 0,
             countRestBasic = 0,
             countRestSem = 0,
-            -- countNewAtms = 0,
             addedCsBasic = [],
             addedCsSem = [],
             addedIcsSem = [],
@@ -261,16 +224,6 @@ fmapTraceStep f ( NewBasicClause(cntSat, cntRest,c) ) = NewBasicClause(cntSat,cn
 fmapTraceStep f ( NewSemClauses(cntSat, cntRest, chSize,cs,ics,newAxioms,wrongModel) ) =
     NewSemClauses(cntSat,cntRest, chSize,map (fmap f) cs,  map (fmapImplClause f) ics,  map (fmap f) newAxioms, fmapModel f wrongModel)
 
-
-{-
-toSTring (Check(icType, k,ic)) = "Check"
-toString  (AskSatR(cntSat,cntRest,right)) = "AskSatR" 
-toString  (AskSatRW(cntSat,cntRest, wk,a, right)) =  "AskSatRW"
-toString (NewWorld (k, xs) ) =  "NewWorld"
-toString (ProvedSat(k,xs,right)) = "ProvedSat"
-toString ( NewBasicClause(cntSat, cntRest,c) ) = "NewBasicClause"
-toString ( NewSemClauses(cntSat, cntRest,cs,ics,newAxioms,wrongModel) ) = "NewSemClauses"
--}
 
 
 

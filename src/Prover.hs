@@ -1,7 +1,7 @@
 {-# LANGUAGE TypeOperators #-}
 module Prover (
   proveProblem  -- Logic -> TraceLevel -> FilePath -> Cache  -> Index -> Form Name -> [Clause Name] -> [ImplClause Name] -> Name -> Bool -> IO ()
-                -- prover with trace and derivations/countermodels
+                -- prover with trace and countermodels
 )
   where
 
@@ -30,7 +30,6 @@ import WriteMakeFile
 import qualified BoundedDepth as BoundedDepth
 import qualified Dummett as Dummett
 import qualified DummettBoundedDepth as DummettBoundedDept
--- import qualified HereAndThere as HereAndThere
 import qualified Jankov as  Jankov
 import qualified Kp as  Kp
 
@@ -63,7 +62,7 @@ proveProblem logi traceLev file nameCache formIndex inputForm cs ics goal debug 
   case res of
        Valid  ->  -- valid problem
          do
-           putStrLn ( writeStatistics proverEnv finalProverState )
+           putStrLn $ writeStatistics proverEnv finalProverState 
            when (countRest finalProverState > 0 &&  traceLev >= TraceLevel_medium )(
              putStrLn $ "Size (number of worlds) of the generated models: "
                  ++ (show . reverse . modelsSize) finalProverState
@@ -89,11 +88,11 @@ writeOutputFiles proverEnv finalProverState =
         ltToNm = litToName finalProverState 
         logiWithoutSpaces =  map toUpper $ replaceWithInStr ' ' '_' $ (show . logic) proverEnv
         traceName =  "trace_"  ++ problName   ++ "_" ++ logiWithoutSpaces
-        derName= "derivation_"  ++ problName  ++ "_" ++ logiWithoutSpaces
+        --derName= "derivation_"  ++ problName  ++ "_" ++ logiWithoutSpaces
+        derName = "" -- construction of derivation not implemented
         modelName= "countermodel_"  ++ problName ++  "_" ++ logiWithoutSpaces
         dirName = "out-" ++ problName ++ "-" ++ logiWithoutSpaces
         texTraceFile = combine dirName (addExtension traceName ".tex")
-        -- texDerFile = combine dirName (addExtension derName ".tex")
         gvFileName baseName =  combine dirName (addExtension baseName ".gv")
         counterModel =  fmapModel ltToNm  ( model finalProverState )
         makeFile = combine dirName  "Makefile"
@@ -103,14 +102,12 @@ writeOutputFiles proverEnv finalProverState =
         (latexTrace,wrongNamesModels) =  writeLatexTrace proverEnv finalProverState
         -- wrongNModels :: [(String,Model Name)] 
         (wrongNames,_) = unzip wrongNamesModels 
-        -- gvFilesWrongModels = map ( name -> combine dirName (addExtension name ".gv")) wrongModels
     createDirectoryIfMissing True dirName             
     writeFile texTraceFile latexTrace
     mapM_ (\ (name,mod)  ->   writeFile (gvFileName name)  (writeModelGraphviz name mod)) wrongNamesModels
     if isValidProblemFormula then
       do
-        -- writeFile texDerFile (writeLatexDerivation  proverEnv finalProverState )
-        writeFile makeFile   (writeMakeFile Valid traceName derName wrongNames)
+         writeFile makeFile   (writeMakeFile Valid traceName derName wrongNames)
     else -- the problem formula is not valis
       do
         writeFile (gvFileName modelName)  (writeModelGraphviz problName counterModel )
@@ -193,7 +190,7 @@ runMainLoop  =
          ( when( traceLev >= TraceLevel_high ) $
              do
                modify ( \s -> s{trace = addStep step_foundW (trace s) } )
-               liftIO $  putStrLn  $ ">>> NO( " ++ printfAtmsBrace ltToNm trueAtms ++ " )"
+               liftIO $  putStrLn  $ ">>> NO( " ++ printfAtmsBrace ltToNm (sort trueAtms) ++ " )"
                liftIO $ putStrLn $ printfNewWorld ltToNm cntSat newWorld 
                liftIO $ putStrLn $ printfAddedWorld ltToNm cntSat newWorld  newModel 
            ) -- end when
@@ -240,16 +237,6 @@ data WorldRec =
 -- *ASSUMPTION*:  toCheck is not empty
 
 
--- A worldRecs collects all the worldRec's containing at least one ic to be checked XXXX DELETE
-
-
-{-
-data WorldRecs  =
-  WorldRecs {
-    wRecsOnlyBasic ::           [ WorldRec ] ,        -- wRecs only containing basic ics to be checked
-    wRecsAtLeastOneSemantic ::  [ WorldRec ]         --  wRecs containing at least one semantic ic to checked
-  } -- deriving Show
--}
 
 {-
 
@@ -267,12 +254,6 @@ mkWorldRec :: World Lit  -> [ImplClause Lit]   -> WorldRec
 mkWorldRec w icsToCheck  =
   WorldRec{world =  w , toCheck = icsToCheck , checked = []  } 
 
-{-
-emptyToCheck :: ImplClauseType ->  WorldRec  -> Bool
--- check the toCheck lists
-emptyToCheck Basic    wRec    = null $ toCheck wRec 
-emptyToCheck Semantic wRec    = null $ toCheckSemantic wRec
--}
 
 filterIcsToCheck :: World Lit -> [ImplClause Lit] ->  [ImplClause Lit]
 -- given a world w and a list ics, filter the ic of ics not satisfying condition (C1)
@@ -317,7 +298,6 @@ innerLoop_ics  []  =
   do
     env <- ask  -- get prover environment
     pst <- get  -- get prover state
-    -- liftIO $ putStrLn  $ ">>>>>>>" ++  ( printfAtmsBrace (litToName pst) (initAtms env) )-- XXXX
     let newAxioms = checkModel (logic env) (model pst)  (initAtms env)
     if ( (not . null) newAxioms  ) then
        --  newAxioms is not empty since the model does not respect the semantic constraints 
@@ -345,9 +325,6 @@ innerLoop_ics  worldRecs  =
          liftIO $ putStrLn $ printfWorldRecs (litToName pst0) worldRecs 
          liftIO $ putStrLn $ endDebug
       ) -- end when
-    -- liftIO $ putStrLn "++ BEGIN #########################################"    --  XXXX
-    -- liftIO $ putStrLn $ printfWorldRecs (litToName pst) worldRecs   --  XXX
-    -- liftIO $ putStrLn "++ END #########################################"    --  XXXXX
    -- We check the first ic = (a:->b):->c  in worldRecs of type icType
     let sat = solver pst0
         cntSat =  countSat pst0
@@ -423,7 +400,7 @@ innerLoop_satProve  worldRecs  (w,  (a:->b):->c ,wRec)  =
            do
              -- update prover state
              modify ( \ s -> s{trace = addStep step_foundW (trace s) } )
-             liftIO $ putStrLn $ ">>> NO( " ++ printfAtmsBrace ltToNm trueAtms ++ " )" 
+             liftIO $ putStrLn $ ">>> NO( " ++ printfAtmsBrace ltToNm (sort trueAtms) ++ " )" 
              liftIO $ putStrLn $ printfNewWorld ltToNm cntSat newWorld  
              ) -- end when
           -- the ics to be checked for the new world are *all* the ics selected to be checked when w has been created  
@@ -437,9 +414,6 @@ innerLoop_satProve  worldRecs  (w,  (a:->b):->c ,wRec)  =
                  liftIO $ putStrLn $ printfAddedWorld ltToNm cntSat newWorld  newModel
               ) -- end when
           -- (a:->b) :-> c has been checked, new iteration of the inner loop
-         -- liftIO $ putStrLn " BEGIN #########################################"    --  XXXX
-         -- liftIO $ putStrLn $ printfWorldRecs (litToName pst)  (updateWorldRecs icType worldRecs)   --  XXX
-         -- liftIO $ putStrLn "END #########################################"    --  XXXXX
          innerLoop_ics $  addWorldRec newWRec  ( updateWorldRecs worldRecs ) 
     else
        -- SAT, w , a |-- b :   Yes(assumps) ,  where assumps \subseteq ( w U {a} )
@@ -457,7 +431,7 @@ innerLoop_satProve  worldRecs  (w,  (a:->b):->c ,wRec)  =
            do
             -- update prover state  
             modify ( \ s -> s{trace = addStep step_proved (trace s)  }) 
-            liftIO $ putStrLn $ ">>> YES( " ++  printfAtmsBrace ltToNm assumps   ++    " )"       
+            liftIO $ putStrLn $ ">>> YES( " ++  printfAtmsBrace ltToNm  assumps   ++    " )"       
           ) -- end when
         addNewBasicClause_and_restart newClause
 
@@ -529,15 +503,15 @@ addNewSemClauses_and_restart newAxioms =
             newAxiomsSubst = map (applySubst subst)  newAxiomsName
        -- update prover state
         modify  ( \ s -> s{trace = addStep step_newSemClauses (trace s) } )
-        liftIO $ putStrLn  $ printStep cntSat ++  "New axioms:\n" ++  printfForms id newAxiomsName  
-        liftIO $ putStrLn  $ printStep cntSat ++  "New semantic clauses:\n" ++  printfClauses ltToNm newCs  
+        liftIO $ putStrLn  $ printStep cntSat ++  "New axiom:\n" ++  printfForms id newAxiomsName  
+        liftIO $ putStrLn  $ printStep cntSat ++  "New clauses (after clausification):\n" ++  printfClauses ltToNm newCs  
         liftIO $ putStr    $ printStep cntSat ++
-          ( if null newIcs then "" else  "New semantic impl. clauses:\n" ++  printfImplClauses ltToNm newIcs ++ "\n")
+          ( if null newIcs then "" else  "New impl. clauses (after clausification):\n" ++  printfImplClauses ltToNm newIcs ++ "\n")
         liftIO $ putStrLn ( printStep cntSat ++   printR   (cntRest + 1) ++ " = "
-            ++ printR cntRest ++ " + new semantic clauses"  )
-        liftIO $ putStrLn  $ "Internal map:\n" ++  printCache cache
-        liftIO $ putStrLn  $ "Name Map:\n" ++  printCacheSubst_withMainGoal cache  (inputFormula env)
-        liftIO $ putStrLn  $ "New Axioms  (with substitution):\n" ++   printfForms id newAxiomsSubst 
+            ++ printR cntRest ++ " + new clauses"  )
+        liftIO $ putStrLn  $ "Internal cache:\n" ++  printCache cache
+        liftIO $ putStrLn  $ "Substitution:\n" ++  printCacheSubst_withMainGoal cache  (inputFormula env)
+        liftIO $ putStrLn  $ "New axiom (with substitution applied):\n" ++   printfForms id newAxiomsSubst 
         liftIO $ putStrLn ( "###########  RESTART " ++ show (cntRest + 1)  ++ " (SEMANTIC)" ++
                               "  ###########" )
        )-- end when
@@ -568,7 +542,6 @@ checkModel logi mod inputAtms =
       Bd n           ->  BoundedDepth.checkModel  mod n
       Dummett        ->  Dummett.checkModel  mod  inputAtms
       GLn n           -> DummettBoundedDept.checkModel mod n inputAtms
-      -- HereAndThere   ->  HereAndThere.checkModel  mod inputAtms 
       Jankov         ->  Jankov.checkModel  mod inputAtms 
       Kp             ->  Kp.checkModel  mod inputAtms 
 
@@ -590,8 +563,6 @@ clausifyNewAxioms  newAxioms =
          (newCache, newIndex,cs1_name,ics_name ) =  clausifyForms index newAxioms_name
          cs2_name = closureImplClauses ics_name 
          cs_name = cs1_name `union` cs2_name
-    -- liftIO $ putStrLn  $ ">>>>>>>>>>>\n" ++  printCache newCache ++ "\n<<<<<<<<<<<<<<<<<"
-    -- liftIO $ putStrLn  $ ">>>>>>>>>>>\n" ++  printCache (  cache   `Map.union` newCache) ++ "\n<<<<<<<<<<<<<<<<<"   
     newLits <- liftIO $   mapM (\_ -> newLit sat) [ index .. newIndex - 1 ]
     let newNames = map mkNewName [index .. newIndex - 1 ]
         new_nmToLt_map =  nmToLt_map `Map.union` Map.fromList (newNames `zip` newLits)   -- update Name to Lit map
@@ -634,7 +605,7 @@ writeStatistics env pst =
         ++  printfFormsLn  (ltToNm_map  Map.!)   (addedAxioms  pst)  --  unlines ( map show  (addedAxioms  pst) )
         ++ sizeCounterModel
         ++  "\nInternal Cache:\n" ++ printCache cache
-        ++  "\nName Map:\n" ++ printCacheSubst_withMainGoal cache  (inputFormula env)
+        ++  "\nSubstitution:\n" ++ printCacheSubst_withMainGoal cache  (inputFormula env)
       countInitCs =    (length  . initClauses ) env
       countAddedCsBasic =   (length  . addedCsBasic ) pst
       countAddedCsSem =     (length  . addedCsSem ) pst
@@ -642,25 +613,15 @@ writeStatistics env pst =
       countInitIcs =    (length  . initImplClauses ) env
       countAddedIcsSem =     (length  . addedIcsSem ) pst
       countTotIcs =  countInitIcs +  countAddedIcsSem
-      --  countInitAtms = (length . initAtms) env
-      -- countAddedAtms =  atmIndex pst
-      -- countTotAtms = countInitAtms + countAddedAtms
-      -- countAddedAtms = 
   in 
-  -- 
-  -- ++ "\nImpl. clauses: " ++ show ( length (initImplClauses env) )
-  -- ++ "\nAtoms: " ++ show ( length (universe pst) )
   "Calls to the SAT-solver: " ++ show ( countSat pst ) 
   ++ "\nRestarts: " ++  show (countRest pst)
   ++ " (" ++ show (countRestBasic pst) ++  " basic, " ++  show (countRestSem pst) ++ " semantic)"
-  -- ++ "\n*** TRACE LEVEL " ++ show traceLev
   ++ ( if ( traceLev >= TraceLevel_high ) then  strLearnedAxioms_and_map  else "" )
   ++ "\nAdded clauses: " ++ show countTotCs ++ " ("
   ++  show countInitCs ++ " initial, " ++  show countAddedCsBasic ++ " basic rest., " ++  show countAddedCsSem ++ " sem. rest.)"
   ++ "\nAdded impl. clauses: " ++ show countTotIcs ++ " ("
   ++  show countInitIcs ++ " initial, " ++  show countAddedIcsSem ++ " sem. rest.)"
-  -- ++ "\nNew atoms: " ++ show countTotAtms ++ " ("
-  -- ++ show countInitAtms ++ " after initial clausification, " ++ show countAddedAtms ++  " added in sem. restarts)"
   ++ "\nLearned axioms: "  ++  ( show .length ) addedAxs  ++ "\n" 
   ++  printfFormsLn id addedAxsSubst 
   -- Map.! ::  Ord k => Map k a -> k -> a
@@ -723,20 +684,3 @@ endDebug ::  String
 endDebug = ">>>>>><<<<<<"
 
 
--- ############################   TEST
-{-
-testClausify :: [Form Name] -> IO ()
-testClausify fs =
-  do
-    let (index,cache, cs, ics) = clausifyForms 5 fs
-    putStrLn  $ "=== CLAUSES ===\n" ++  printfClauses id cs 
-    putStrLn  $ "=== IMPL. CLAUSES ===\n" ++  printfImplClauses id ics 
-    putStrLn  $ "=== CACHE ===\n" ++  printCache cache
-    putStrLn  $ "=== NAME MAP ===\n" ++  printCacheSubst cache
-
-
-a = Atom "a"
-b = Atom "b"
-c = Atom "c"
-kp = ( negf a :=>: b :|: c) :=>:  ( negf a :=>: b ) :|:  ( negf a :=>: c )
--}

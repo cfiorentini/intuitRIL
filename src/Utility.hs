@@ -245,7 +245,7 @@ cache_to_subst_withMainGoal cache  inputForm   =
 printfWorld :: Ord a => (a -> Name) ->  World a -> String
 printfWorld f w =
   "W" ++  show ( worldIndex w) ++ " = "
-  ++ printfAtmsBrace f (sort (worldAtms w) )
+  ++ printfAtmsBrace f ( (sort . worldAtms) w )
 
 printfWorlds :: Ord a => (a -> Name) -> [World a] -> String
 printfWorlds  f ws =

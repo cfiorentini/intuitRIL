@@ -24,8 +24,8 @@ type WrongModelName = String
 
 
 writeMakeFile :: SearchResult -> TraceName -> DerOrModName -> [WrongModelName] -> String
-writeMakeFile result   traceName derName wrongModelsNames =
-   preamble result  traceName derName ++  body result  wrongModelsNames
+writeMakeFile result   traceName derOrModName wrongModelsNames =
+   preamble result  traceName derOrModName ++  body result  wrongModelsNames
 
 
 preamble :: SearchResult -> TraceName ->   DerOrModName -> String
@@ -56,20 +56,6 @@ writeWrongModel :: WrongModelName -> String
 writeWrongModel w =
   "\tdot " ++  w ++ ".gv -Tpng -o " ++ w ++ ".png\n"
 
-
-{-
-
-body_all :: SearchResult -> String
--- with derivations
-body_all Valid = [r|
-all:
-	@echo -- Compiling files ...
-	pdflatex -halt-on-error ${TRACE}.tex  > /dev/null
-	pdflatex -halt-on-error ${DERIVATION}.tex  > /dev/null
-	@rm -f *.log  *.aux
-|]  -- end string
-
--}
   
 body_all :: SearchResult -> String
 body_all Valid = [r|

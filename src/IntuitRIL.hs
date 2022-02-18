@@ -117,7 +117,6 @@ parse argv = case getOpt Permute flags argv of
             else return  (args,inputFiles)  --   (nub (concatMap show args), files)
         (_,_,errs)      ->
           do
-            -- hPutStrLn stderr (concat errs ++ usageInfo header flags)
             hPutStrLn stderr $ ( concat errs ) ++ help 
             exitWith (ExitFailure 1)
        -- where header = "Usage: intuitR [OPTION] ..  [file] ..."
@@ -162,25 +161,28 @@ isLogicName _              = False
 
 help :: String
 help = [r|
-Usage: intuitR [OPTION] FILE
+Usage: intuitRIL [OPTION] FILE
 
 FILE
-  text file containing the input formula in TPTP syntax
-  (see http://tptp.cs.miami.edu/TPTP/QuickGuide/Problems.html)
+  text file containing the input formula F (mandatory), see README for the syntax
 
 TRACE OPTIONS
  -t     trace (maximum level) and generate output files 
  -t0    minimum trace level, no output files 
  -t1    medium  trace level, no output files
  -t2    maximum trace level, no output files (*default*)
- -d     debug (print worldRecords)
+ -d     debug (print additional information on the prover state)
 
 LOGIC OPTIONS
--lipl   Intuitionistic Propositional Logi (*default*)
--lgl    Goedel-Dummett Logic (linear frames)
--lgln   Goedel-Dummett Logic n (linear frames, depth at most n)
--ljn    Jankov Logic (one maximal world)
--lkp    Kreisel and Putnam Logic (condition on maximal worlds)
+-lipl   Intuitionistic Propositional Logic (*default*)
+-lgl    Goedel-Dummett Logic               (linear frames)
+-lglk   Goedel-Dummett Logic k             (linear frames, depth at most k)
+-ljn    Jankov Logic                       (one maximal world)
+-lkp    Kreisel and Putnam Logic          (condition on maximal worlds, see README)
+
+OTHER OPTIONS
+-c    only clausify the input formula
+
 |]-- end string
 
   

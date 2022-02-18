@@ -112,14 +112,6 @@ lineComment =
 
 
 
-{-
-makeForm :: [Form Name] -> Form Name -> Form Name 
--- makeForm assumps concl
---  build the formula (/\ assumps) => concl (concl if empty assumps)
-makeForm [] concl = concl
-makeForm assumps concl =   foldl1 (:&:) assumps :=>: concl
--}
-
 
 
 {-

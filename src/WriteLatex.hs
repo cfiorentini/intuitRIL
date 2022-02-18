@@ -326,7 +326,7 @@ writeSteps  [step] =
   let result =
         case step of
            ProvedSat(_,_,_) -> "\\subsection*{Goal proved}"
-           otherwise  ->   "\\subsection*{Countermodel found}"
+           otherwise  ->   "\\subsection*{Countermodel found (see the obtained file png)}"
   return $   strStep ++   endRestart ++ result
 
 
@@ -826,43 +826,3 @@ writeFormsNL (f:fs)  = writeForm f ++ writeNL 1 ++ writeFormsNL fs
 
 
 
-
--- ######## 
-
--- print the encoding of new atoms 
-{-
-
-writeFormIndexes :: FormIndexes -> String
-
-writeFormIndexes formIndexes =
-  let indexFormList = sort $ (map swap) $ Map.toList $ formIndexMap formIndexes
-  in
-  if null  indexFormList then ""
-  else
-    beginArray "lcl"
-    ++ writeFormIndexList indexFormList
-    ++ endArray 
-  where
-    swap (x,y) = (y,x)
-
-
-writeFormIndexList :: [(Int,Form)] -> String
-
-
-writeFormIndexList [] = ""
-writeFormIndexList ((k,form) : xs)  =
-  let pk = Atom ( "$p" ++ show k ) in
-  writeForm  pk ++ " & \\,= \\,& "  ++ writeForm form 
-  ++ if null xs then ""
-     else writeNL 1  ++ writeFormIndexList xs 
-
--}
-
-{-
-
-writeFormIndex :: (Int,Form) -> String
-writeFormIndex k form =
-  let pk = Atom ( "$" ++ show k ) in
-  writeForm  pk ++ " & \\,= \\,& " 
-
--}
