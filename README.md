@@ -8,13 +8,14 @@ An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to 
 Installation
 ------------
 
-You have to install:
-
-- the [Haskell Platform](https://www.haskell.org/platform/)
-- the [Haskell Cabal](https://www.haskell.org/cabal/)
+You have to install the Haskell toolchain, in particular GHC (the Glasgow Haskell Compiler)  and  cabal-install 
+(the Cabal installation tool for managing Haskell software); see the  [download page](https://www.haskell.org/downloads).
 
 
-From the  root directory (i.e., the directory containing the file  `intuitRIL.cabal`) run the command:
+Compilation
+-----------
+
+To compile `intuitRIL`, from the  root directory (i.e., the directory containing the file  `intuitRIL.cabal`) run the command:
 
 ```console
  cabal install
