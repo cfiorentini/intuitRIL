@@ -8,8 +8,8 @@ An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to 
 Installation
 ------------
 
-You have to install the Haskell toolchain, in particular GHC (the Glasgow Haskell Compiler)  and  cabal-install 
-(the Cabal installation tool for managing Haskell software); see the  [download page](https://www.haskell.org/downloads).
+You have to install the [Haskell toolchain](https://www.haskell.org/downloads),
+in particular GHC (the Glasgow Haskell Compiler)  and  cabal-install (the Cabal installation tool for managing Haskell software).
 
 
 Compilation
