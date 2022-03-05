@@ -90,7 +90,7 @@ writeOutputFiles proverEnv finalProverState =
         traceName =  "trace_"  ++ problName   ++ "_" ++ logiWithoutSpaces
         --derName= "derivation_"  ++ problName  ++ "_" ++ logiWithoutSpaces
         derName = "" -- construction of derivation not implemented
-        modelName= "countermodel_"  ++ problName ++  "_" ++ logiWithoutSpaces
+        countmodName= "countermodel_"  ++ problName ++  "_" ++ logiWithoutSpaces
         dirName = "out-" ++ problName ++ "-" ++ logiWithoutSpaces
         texTraceFile = combine dirName (addExtension traceName ".tex")
         gvFileName baseName =  combine dirName (addExtension baseName ".gv")
@@ -99,7 +99,7 @@ writeOutputFiles proverEnv finalProverState =
         msgMake = (concat $ replicate 80 "*" ) ++
                  "\n---> Output files are in the directory '" ++    dirName  ++ "'" ++
                  "\n---> Move into directory '" ++ dirName ++ "' and run command 'make' to compile them"
-        (latexTrace,wrongNamesModels) =  writeLatexTrace proverEnv finalProverState
+        (latexTrace,wrongNamesModels) =  writeLatexTrace proverEnv finalProverState{countermodelName = countmodName}
         -- wrongNModels :: [(String,Model Name)] 
         (wrongNames,_) = unzip wrongNamesModels 
     createDirectoryIfMissing True dirName             
@@ -108,10 +108,10 @@ writeOutputFiles proverEnv finalProverState =
     if isValidProblemFormula then
       do
          writeFile makeFile   (writeMakeFile Valid traceName derName wrongNames)
-    else -- the problem formula is not valis
+    else -- the problem formula is not valid, countermodel found
       do
-        writeFile (gvFileName modelName)  (writeModelGraphviz problName counterModel )
-        writeFile makeFile (writeMakeFile CountSat  traceName modelName wrongNames)
+        writeFile (gvFileName countmodName)  (writeModelGraphviz problName counterModel )
+        writeFile makeFile (writeMakeFile CountSat  traceName countmodName wrongNames)
     putStrLn msgMake
 
 

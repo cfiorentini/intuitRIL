@@ -39,7 +39,7 @@ data Flag
   | Debug                  -- -d
   | Clausify               -- -c
   | LogicName  Logic       -- -lx where x is the name of the logic 
-  | Help                   -- --help
+  | Help                   -- -h
    deriving (Eq,Show)
 
 flags =
@@ -80,7 +80,7 @@ argLogicName  _      = LogicName Ipl -- default
 main :: IO ()
 main =
   do
-    (args, files) <- getArgs >>= parse
+    (args, files) <- getArgs >>= parseArgs
     let logi =  getLogicArgs args  
         traceLev = getTraceLevelArgs args
         debug = Debug `elem` args
@@ -95,32 +95,30 @@ main =
 ------------------------
 -- parse arguments
 
-parse :: [String] -> IO ([Flag], [FilePath])
+parseArgs :: [String] -> IO ([Flag], [FilePath])
 -- return arguments and input files in the command line 
-parse argv = case getOpt Permute flags argv of
-        (args,inputFiles,[]) ->
+parseArgs argv =
+  case getOpt Permute flags argv of
+        (args,inputFiles,[]) ->   -- empty list of error messages
           do
-            --let files = if null fs then ["-"] else fs
-            ( when ( null inputFiles ) $
-             do
-               hPutStrLn stderr $ "No input file" ++ help
-               exitWith (ExitFailure 1)
-              )  
-            if Help `elem` args then
+            if Help `elem` args then -- print help
               do
-                hPutStrLn  stderr  help --   (usageInfo header flags)
+                hPutStrLn  stderr  help 
                 exitWith ExitSuccess
-            else if Clausify `elem` args then
+            else if  null inputFiles  then -- no input filr
+              do
+                hPutStrLn stderr $ "No input file" ++ help
+                exitWith (ExitFailure 1) 
+            else if Clausify `elem` args then  -- onòly clausify
               do  
                 onlyClausifyInputFormulas (head inputFiles)
                 exitWith ExitSuccess 
-            else return  (args,inputFiles)  --   (nub (concatMap show args), files)
-        (_,_,errs)      ->
+            else return  (args,inputFiles)  
+        (_,_,errs)      ->  -- non-empty list of error messages
           do
             hPutStrLn stderr $ ( concat errs ) ++ help 
             exitWith (ExitFailure 1)
-       -- where header = "Usage: intuitR [OPTION] ..  [file] ..."
-
+      
 
 
 getLogicArgs ::  [Flag] -> Logic
@@ -164,7 +162,7 @@ help = [r|
 Usage: intuitRIL [OPTION] FILE
 
 FILE
-  text file containing the input formula F (mandatory), see README for the syntax
+  text file containing the input formula, see the README file for the syntax
 
 TRACE OPTIONS
  -t     trace (maximum level) and generate output files 
@@ -182,6 +180,7 @@ LOGIC OPTIONS
 
 OTHER OPTIONS
 -c    only clausify the input formula
+-h    print help 
 
 |]-- end string
 

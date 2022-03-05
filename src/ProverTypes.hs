@@ -89,6 +89,7 @@ data ProverState =
      wIndex  ::  Int,  -- index of the next world
      model :: Model Lit,    -- model
      modelsSize :: [Int], -- list of the size (number of worlds)of the generated models (just before a restart)
+     countermodelName :: String,  -- base name of the file containing the countermodel
      trace :: Trace Lit,  --  trace
      isValidForm :: Bool -- True iff the input formula is valid
   }
@@ -112,6 +113,7 @@ mkProverState sat univ ltToNm_map nmToLt_map cache index   =
             wIndex = 0,
             model = emptyModel,
             modelsSize = [],
+            countermodelName = "",
             trace = emptyTrace,
             isValidForm = False
             }

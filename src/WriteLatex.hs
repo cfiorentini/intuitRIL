@@ -7,11 +7,10 @@ String are enclosed between   [r| and  |]
 
 module  WriteLatex
   (
-     writeLatexTrace,           --   ProverEnv -> ProverState  -> (String,[(String,Model Name)])
+     writeLatexTrace,           --   ProverEnv -> ProverState   -> (String,[(String,Model Name)])
      -- return (strTrace,wrongModels) where:
-     --   strTrace:   string representing the trace
-     -- wrongModels:  list  (name,wrongModel) of models not satisfying the semantic constraints
-     writeLatexDerivation       --   ProverEnv -> ProverState  -> String
+     --   strTrace:     string representing the trace
+     --   wrongModels:  list  (name,wrongModel) of models not satisfying the semantic constraints
   )
 
 
@@ -112,16 +111,6 @@ writeLatexTrace env pst  =
                           ++ endDocument
     in   (strTraceProblem, wrongModels)                  
         
- 
-{-  
-writeLatexTrace env pst  =
-    let context = mkContext env pst
-    in    
-    preamble Large
-    ++ writeProblemPresentation env pst
-    ++ evalState ( writeTraceAndProblemDescription env pst ) context
-    ++ endDocument
--}
 
 
 writeLatexDerivation ::  ProverEnv -> ProverState  -> String
@@ -310,7 +299,10 @@ writeTrace :: ProverEnv -> ProverState  -> State Context  String
 writeTrace env pst =
  do
   strSteps <- writeSteps $ getSteps (traceName  pst)
-  return $ beginTrace  ++ strSteps 
+  let counterMod =
+        if isValidForm pst then ""
+        else "See file \\verb|" ++      countermodelName pst   ++ ".png|\n"
+  return $ beginTrace  ++ strSteps ++ counterMod 
 
 
 
@@ -325,8 +317,8 @@ writeSteps  [step] =
   strStep <- writeStep step
   let result =
         case step of
-           ProvedSat(_,_,_) -> "\\subsection*{Goal proved}"
-           otherwise  ->   "\\subsection*{Countermodel found (see the obtained file png)}"
+           ProvedSat(_,_,_) -> "\\subsection*{Proved}"
+           otherwise  ->   "\\subsection*{Countermodel found}\n"
   return $   strStep ++   endRestart ++ result
 
 
