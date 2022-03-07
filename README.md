@@ -1,21 +1,32 @@
 intuitRIL
 =========
 
-An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to Intermediate Logics.
+An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to Intermediate Propositional Logics.
+The prover is written in [Haskell](https://www.haskell.org/).
+
+The directory `examples` contains the  files obtained by running `intuitRIL` on the following input formulas in the  G&ouml;del-Dummett Logic GL:
+
+- &not;a &or; &not;&not;a  &nbsp; &nbsp; (directory `out-jankovAxiom-GL`, see Example 3 in the paper)
+- (&not;a &rarr; b &or; c )  &rarr;  (&not;a &rarr; b) &or;    (&not;a &rarr; c )  &nbsp; &nbsp;   (directory `out-kpAxiom-GL`).
 
 
 
-Installation
-------------
+
+
+Haskell Installation
+-------------------
 
 You have to install the [Haskell toolchain](https://www.haskell.org/downloads),
-in particular GHC (the Glasgow Haskell Compiler)  and  cabal-install (the Cabal installation tool for managing Haskell software).
+in particular:
+
+- [GHC](https://www.haskell.org/ghc/): the Glasgow Haskell Compiler
+- [cabal-install](https://cabal.readthedocs.io/en/3.6/): the Cabal installation tool for managing Haskell software.
 
 
-Compilation
------------
+IntuitRIL Compilation
+----------------------
 
-To compile `intuitRIL`, from the  root directory (i.e., the directory containing the file  `intuitRIL.cabal`) run the command:
+From the  root directory (i.e., the directory containing the file  `intuitRIL.cabal`) run the command:
 
 ```console
  cabal install
