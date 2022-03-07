@@ -6,8 +6,8 @@ The prover is written in [Haskell](https://www.haskell.org/).
 
 The directory `examples` contains the  files obtained by running `intuitRIL` on the following input formulas in the  G&ouml;del-Dummett Logic GL:
 
-- &not;a &or; &not;&not;a  &nbsp; &nbsp; (directory `out-jankovAxiom-GL`, see Example 3 in the paper)
-- (&not;a &rarr; b &or; c )  &rarr;  (&not;a &rarr; b) &or;    (&not;a &rarr; c )  &nbsp; &nbsp;   (directory `out-kpAxiom-GL`).
+- &not;a &or; &not;&not;a  &nbsp; &nbsp; (directory `examples/out-jankovAxiom-GL`, see Example 3 in the paper)
+- (&not;a &rarr; b &or; c )  &rarr;  (&not;a &rarr; b) &or;    (&not;a &rarr; c )  &nbsp; &nbsp;   (directory `examples/out-kpAxiom-GL`).
 
 
 
@@ -22,6 +22,7 @@ in particular:
 - [GHC](https://www.haskell.org/ghc/): the Glasgow Haskell Compiler
 - [cabal-install](https://cabal.readthedocs.io/en/3.6/): the Cabal installation tool for managing Haskell software.
 
+See the  [Installation instructions](https://www.haskell.org/downloads#ghcup).
 
 IntuitRIL Compilation
 ----------------------
@@ -78,7 +79,7 @@ a | (a => b | ~b)
 You can also use the [TPTP syntax](http://tptp.cs.miami.edu/TPTP/QuickGuide/Problems.html).
 Examples of formulas are available in the directory `test` (files with suffix `.p`).
 
-To decide the validity of the formula in the file `form.p` in the logic with name `LogName`, run the command:
+To decide the validity of the formula written in the file `form.p` in the logic with name `LogName`, run the command:
 
 ```console
  intuitRIL -lLogName form.p
