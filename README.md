@@ -1,4 +1,4 @@
-intuitRIL
+IntuitRIL
 =========
 
 An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to Intermediate Propositional Logics.
@@ -13,7 +13,7 @@ The directory `examples` contains the  files obtained by running `intuitRIL` wit
 
 
 
-Haskell Installation
+Haskell installation
 -------------------
 
 You have to install the [Haskell toolchain](https://www.haskell.org/downloads)
@@ -25,7 +25,7 @@ in particular:
 
 
 
-IntuitRIL Compilation
+IntuitRIL compilation
 ----------------------
 
 From the  root directory (i.e., the directory containing the file  `intuitRIL.cabal`) run the command:
