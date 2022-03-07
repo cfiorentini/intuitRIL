@@ -136,11 +136,9 @@ If you only want to clausfy the input formula, use option `-c`:
  intuitRIL -c form.p
 ```
 
-Examples
---------
 
-The directory `examples` contain two examples.
-The output has be obtained by running the following command lines from the directory `test`
+
+The examples in directory `examples`  have be obtained by running the following command lines from the directory `test`
 (if you run the prover from another directory, you have to specify the full path of the input files `.p`):
 
 ```console
