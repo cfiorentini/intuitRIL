@@ -4,10 +4,14 @@ IntuitRIL
 An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to Intermediate Propositional Logics.
 The prover is written in [Haskell](https://www.haskell.org/).
 
-The directory `examples` contains the  files obtained by running `intuitRIL` with the following input formulas in the  G&ouml;del-Dummett Logic GL:
+The directory [examples](https://github.com/cfiorentini/intuitRIL/tree/main/examples)
+contains the  files obtained by running `intuitRIL` with the following input formulas in the  G&ouml;del-Dummett Logic GL:
 
-- &not;a &or; &not;&not;a  &nbsp; &nbsp; (directory `examples/out-jankovAxiom-GL`, see Example 3 in the paper)
-- (&not;a &rarr; b &or; c )  &rarr;  (&not;a &rarr; b) &or;    (&not;a &rarr; c )  &nbsp; &nbsp;   (directory `examples/out-kpAxiom-GL`).
+- &not;a &or; &not;&not;a  &nbsp; &nbsp;
+(directory [examples/out-jankovAxiom-GL](https://github.com/cfiorentini/intuitRIL/tree/main/examples/out-jankovAxiom-GL), see Example 3 in the paper)
+- (&not;a &rarr; b &or; c )  &rarr;  (&not;a &rarr; b) &or;    (&not;a &rarr; c )  &nbsp; &nbsp;
+(directory [examples/out-kpAxiom-GL](https://github.com/cfiorentini/intuitRIL/tree/main/examples/out-kpAxiom-GL)).
+
 
 
 
@@ -78,7 +82,8 @@ a | (a => b | ~b)
 ```
 
 You can also use the [TPTP syntax](http://tptp.cs.miami.edu/TPTP/QuickGuide/Problems.html).
-Examples of formulas are available in the directory `test` (files with suffix `.p`).
+Examples of formulas are available in the directory [test](https://github.com/cfiorentini/intuitRIL/tree/main/test)
+(files with suffix `.p`).
 
 To decide the validity of the formula written in the file `form.p` in the logic with name `LogName`, run the command:
 
@@ -138,8 +143,9 @@ If you only want to clausfy the input formula, use option `-c`:
 
 
 
-The examples in the directory `examples`  have be obtained by running the following command lines from the directory `test`
-(if you run the prover from another directory, you have to specify the full path of the input files `.p`):
+The examples in the directory [examples](https://github.com/cfiorentini/intuitRIL/tree/main/examples)
+have be obtained by running the following command lines 
+(you have to run the prover from your local directory `test` or specify the full path of the input files `.p`):
 
 ```console
 intuitRIL -lgl -t jankovAxiom.p 
