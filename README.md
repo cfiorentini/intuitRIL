@@ -17,7 +17,7 @@ Haskell Installation
 -------------------
 
 You have to install the [Haskell toolchain](https://www.haskell.org/downloads)
-(see  the  [Installation instructions](https://www.haskell.org/downloads#ghcup)), 
+(see  the section  [Installation instructions](https://www.haskell.org/downloads#ghcup)), 
 in particular:
 
 - [GHC](https://www.haskell.org/ghc/): the Glasgow Haskell Compiler
