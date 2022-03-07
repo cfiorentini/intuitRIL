@@ -138,7 +138,7 @@ If you only want to clausfy the input formula, use option `-c`:
 
 
 
-The examples in directory `examples`  have be obtained by running the following command lines from the directory `test`
+The examples in the directory `examples`  have be obtained by running the following command lines from the directory `test`
 (if you run the prover from another directory, you have to specify the full path of the input files `.p`):
 
 ```console
