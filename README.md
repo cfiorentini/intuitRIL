@@ -16,13 +16,14 @@ The directory `examples` contains the  files obtained by running `intuitRIL` on 
 Haskell Installation
 -------------------
 
-You have to install the [Haskell toolchain](https://www.haskell.org/downloads),
+You have to install the [Haskell toolchain](https://www.haskell.org/downloads)
+(see  the  [Installation instructions](https://www.haskell.org/downloads#ghcup)), 
 in particular:
 
 - [GHC](https://www.haskell.org/ghc/): the Glasgow Haskell Compiler
 - [cabal-install](https://cabal.readthedocs.io/en/3.6/): the Cabal installation tool for managing Haskell software.
 
-See the  [Installation instructions](https://www.haskell.org/downloads#ghcup).
+
 
 IntuitRIL Compilation
 ----------------------
