@@ -4,7 +4,7 @@ intuitRIL
 An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to Intermediate Propositional Logics.
 The prover is written in [Haskell](https://www.haskell.org/).
 
-The directory `examples` contains the  files obtained by running `intuitRIL` on the following input formulas in the  G&ouml;del-Dummett Logic GL:
+The directory `examples` contains the  files obtained by running `intuitRIL` with the following input formulas in the  G&ouml;del-Dummett Logic GL:
 
 - &not;a &or; &not;&not;a  &nbsp; &nbsp; (directory `examples/out-jankovAxiom-GL`, see Example 3 in the paper)
 - (&not;a &rarr; b &or; c )  &rarr;  (&not;a &rarr; b) &or;    (&not;a &rarr; c )  &nbsp; &nbsp;   (directory `examples/out-kpAxiom-GL`).
