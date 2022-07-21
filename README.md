@@ -7,8 +7,8 @@ See [1] for a presentation; it is implemented in [Haskell](https://www.haskell.o
 
 The directory [documents](https://github.com/cfiorentini/intuitRIL/tree/main/documents) contains
 
-- a full version of the paper (with the omitted proofs);
-- the slides presented at IJCAR 2022.
+- a full version of the paper, with the omitted proofs ([pdf](https://github.com/cfiorentini/intuitRIL/tree/main/documents/intuitRIL_withAppendix.pdf))
+- the slides presented at IJCAR 2022 ([pdf](https://github.com/cfiorentini/intuitRIL/tree/main/documents/slidesIJCAR2022.pdf)).
 
 The directory [examples](https://github.com/cfiorentini/intuitRIL/tree/main/examples)
 contains the  files obtained by running `intuitRIL` with the following input formulas in the  G&ouml;del-Dummett Logic GL:
@@ -26,7 +26,7 @@ References
 
 In:  Blanchette et al. (Eds.): IJCAR 2022, LNAI 13385, pp. 57–74, 2022.
 
-[https://https://doi.org/10.1007/978-3-031-10769-6_5](https://doi.org/10.1007/978-3-031-10769-6_5 (Open Access)
+[https://doi.org/10.1007/978-3-031-10769-6_5](https://doi.org/10.1007/978-3-031-10769-6_5) (Open Access)
 
 
 
