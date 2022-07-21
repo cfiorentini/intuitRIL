@@ -76,7 +76,8 @@ proveProblem logi traceLev file nameCache formIndex inputForm cs ics goal debug 
              putStrLn $ "Size (number of worlds) of the generated models: "
                  ++ (show . reverse . modelsSize) finalProverState
             ) -- end when
-           putStrLn $ "+++ RESULT: Not Valid (Logic " ++ show logi ++ ")"  
+           --putStrLn $ "+++ RESULT: Not Valid (Logic " ++ show logi ++ ")"
+           putStrLn $ "+++ RESULT: CounterSatisfiable (Logic " ++ show logi ++ ")"  
            when (traceLev >= TraceLevel_high_with_latex) (writeOutputFiles proverEnv finalProverState)
                    
             

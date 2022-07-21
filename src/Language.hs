@@ -99,11 +99,11 @@ buildInputForm :: [Input (Form a)] -> Form a
 
 Given a list of input formulas
 
- (Input  _ Axiom f1)      ...      (Input _ Axiom fm) , (Input  _ Conjecture g) 
+ (Input  _ Axiom f1)      ...      (Input _ Axiom fn) , (Input  _ Conjecture g) 
 
 (in any order) return the formula
 
-  f1 & .. & fn => g1 & ... & gn   
+  f1 & .. & fn => g   
 
 ASSUMPTION: there is one Conjecture
 
@@ -150,9 +150,7 @@ instance Show FormRole where
 
 -- mkNewName :: Int -> Name
 -- make the name of a new atom,  having form "$pk", with k >= 0
-
 mkNewName :: Int -> Name
--- make the name of a new atom
 mkNewName k =  "$p" ++ show k
 
 

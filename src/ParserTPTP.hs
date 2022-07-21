@@ -38,10 +38,7 @@ languageDef =
               Token.commentLine     = "%" ,
               Token.identStart      = letter ,
               Token.identLetter     = alphaNum <|> oneOf "!$?^+-_",
-              Token.reservedNames   = [ "fof" ,
-                                        "axiom" ,
-                                        "conjecture"
-                                      ],
+              Token.reservedNames   = [ "fof"],
               Token.reservedOpNames = ["$true", "$false", "~", "&", "|", "=>", "<=>"]
             }
 
@@ -138,9 +135,9 @@ fofSeq = many1 fof  -- at least one fof
 -- parse the role of a fomula (axiom or conjecture)
 formRole :: Parser FormRole 
 formRole =
-  ( reserved "axiom" >> return Axiom )
+  ( string "axiom" >> return Axiom )
   <|>
-  ( reserved "conjecture" >> return Conjecture )
+  ( string "conjecture" >> return Conjecture )
 
 
 -- parse a fof definition 

@@ -105,11 +105,11 @@ parseArgs argv =
               do
                 hPutStrLn  stderr  help 
                 exitWith ExitSuccess
-            else if  null inputFiles  then -- no input filr
+            else if  null inputFiles  then -- no input file
               do
                 hPutStrLn stderr $ "No input file" ++ help
                 exitWith (ExitFailure 1) 
-            else if Clausify `elem` args then  -- onòly clausify
+            else if Clausify `elem` args then  -- only clausify
               do  
                 onlyClausifyInputFormulas (head inputFiles)
                 exitWith ExitSuccess 
@@ -252,8 +252,8 @@ onlyClausifyInputFormulas file =
           let form = buildInputForm inputForms    
               (cache, index, cs, ics) = clausifyForms 0 [form]
           putStrLn  $ "=== FORMULA ===\n" ++  printfForm id form 
-          putStrLn  $ "=== CLAUSES ===\n" ++  printfClauses id cs 
-          putStrLn  $ "=== IMPL. CLAUSES ===\n" ++  printfImplClausesLn id ics 
+          putStrLn  $ "=== CLAUSES (" ++ (show . length ) cs ++  ") ===\n" ++  printfClauses id cs 
+          putStrLn  $ "=== IMPL. CLAUSES ("  ++ (show . length ) ics ++ ") ===\n" ++  printfImplClausesLn id ics 
           putStrLn  $ "=== INTERNAL MAP ===\n" ++  printCache cache
           putStrLn  $ "=== SUBSTITUTION ===\n" ++  printCacheSubst cache
 

@@ -2,7 +2,13 @@ IntuitRIL
 =========
 
 An extension of the prover [intuitR](https://github.com/cfiorentini/intuitR) to Intermediate Propositional Logics.
-The prover is written in [Haskell](https://www.haskell.org/).
+See [1] for a presentation; it is implemented in [Haskell](https://www.haskell.org/).
+
+
+The directory [documents](https://github.com/cfiorentini/intuitRIL/tree/main/documents) contains
+
+- a full version of the paper (with the omitted proofs);
+- the slides presented at IJCAR 2022.
 
 The directory [examples](https://github.com/cfiorentini/intuitRIL/tree/main/examples)
 contains the  files obtained by running `intuitRIL` with the following input formulas in the  G&ouml;del-Dummett Logic GL:
@@ -11,6 +17,17 @@ contains the  files obtained by running `intuitRIL` with the following input for
 (directory [examples/out-jankovAxiom-GL](https://github.com/cfiorentini/intuitRIL/tree/main/examples/out-jankovAxiom-GL), see Example 3 in the paper)
 - (&not;a &rarr; b &or; c )  &rarr;  (&not;a &rarr; b) &or;    (&not;a &rarr; c )  &nbsp; &nbsp;
 (directory [examples/out-kpAxiom-GL](https://github.com/cfiorentini/intuitRIL/tree/main/examples/out-kpAxiom-GL)).
+
+
+References
+----------
+
+[1] Fiorentini Camillo and Mauro Ferrari. SAT-Based Proof Search in Intermediate Propositional Logics.
+
+In:  Blanchette et al. (Eds.): IJCAR 2022, LNAI 13385, pp. 57–74, 2022.
+
+[https://https://doi.org/10.1007/978-3-031-10769-6_5](https://doi.org/10.1007/978-3-031-10769-6_5 (Open Access)
+
 
 
 

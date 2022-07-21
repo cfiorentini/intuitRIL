@@ -256,7 +256,7 @@ clausifyForm (f1 :=>: f2)  = clausifyImpl f1 f2
 clausifyOr :: [Name] -> [Form Name] -> State ClausState ()
 -- clausifyOr [p1 .. pm] [f1 ... fn]  (with p1 ... pm atoms, f1 .. fn any formulas)
 -- clausify  the formula
---   p1 | ... pm | f1 ... fn
+--   p1 | ... | pm | f1 ... | fn
 clausifyOr ps [] =  addClause ([] :=> ps)
 clausifyOr ps ((f1 :|: f2) : fs) =  clausifyOr ps (f1 : f2 : fs)
 clausifyOr ps (f1 : fs) =
