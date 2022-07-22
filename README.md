@@ -134,7 +134,7 @@ pdflatex your_file.tex
 dot your_file.gv -Tpng -o out.png
 ```
 
-**Note**  If the  text in the pdf file exceeds  the page lenght,
+**Note**  If the  text in the pdf file exceeds  the page width,
 open the  tex file and uncomment one of the following lines:
 
 ```console
@@ -152,7 +152,7 @@ We have implemented other different  trace levels (options `-tk`, with k=0,1,2):
  intuitRIL -l LogName -t2 form.p     // maximum trace level, no output files 
 ```
 
-If you only want to clausfy the input formula, use option `-c`:
+If you only want to clausify the input formula, use option `-c`:
 
 ```console
  intuitRIL -c form.p
