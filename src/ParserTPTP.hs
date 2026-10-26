@@ -69,7 +69,9 @@ operatorTable = [
                 ],   
                 [
                    binaryInf   "=>"   ( :=>: )  AssocRight ,
-                   binaryInf   "<=>"  ( :<=>: ) AssocRight
+                   binaryInf   "->"   ( :=>: )  AssocRight ,
+                   binaryInf   "<=>"  ( :<=>: ) AssocRight ,
+                   binaryInf   "<->"  ( :<=>: ) AssocRight 
                 ]
               ]
 
