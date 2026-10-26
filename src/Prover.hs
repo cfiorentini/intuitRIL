@@ -16,6 +16,7 @@ import System.FilePath
 import Control.Monad.State
 import Control.Monad.RWS
 import MiniSat  --  https://hackage.haskell.org/package/minisat
+import Control.Monad (when)
 
 import Clausify
 import Language 
